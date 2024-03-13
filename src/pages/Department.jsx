@@ -165,7 +165,7 @@ const Department = ({ className }) => {
 							<div className="text-center text-gray-600 flex flex-col gap-y-2 mt-2 items-center justify-center">
 								<p> Oops! No courses or outlines available right now.</p>
 								<p>👋 Reach out on WhatsApp to add or update courses! We're here to assist you.
-								  <br/><a href="https://api.whatsapp.com/send?text=Hi! I need help with courses or outlines. Can you assist me?" target="_blank" className="text-blue-500">Chat on WhatsApp</a>
+								  <br/><a href="https://api.whatsapp.com/send?phone=+2349034954069&text=Hi!%20I%20want%20to%20update%20the%20course%20outline." target="_blank" className="text-blue-500">Click here to update the course outline on WhatsApp 🚀</a>
 								</p>
 							</div>
 							 

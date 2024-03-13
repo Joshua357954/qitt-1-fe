@@ -5,9 +5,12 @@ import { addItem, baseUrl, departments, faculties } from '../utils/utils';
 import { useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import Axios from 'axios';
+import { useDispatch } from 'react-redux'
 import Loader from './Loader';
+import { updateUser } from '../features/authSlice2';
 
 const Enroll = () => {
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     regNumber: '',
     faculty: null,
@@ -49,7 +52,7 @@ const Enroll = () => {
       // Check if there is error
       if (response?.data?.error){
         toast(response?.data?.error)
-        navigate('/')
+        navigate('/auth')
         return
       }
 
@@ -57,6 +60,7 @@ const Enroll = () => {
       if (_user.name) {  
         addItem('qitt-user', _user);
         // Send User to home screeen .
+        dispatchEvent(updateUser(_user))
         navigate('/')
       }
 

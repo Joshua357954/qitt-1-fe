@@ -70,8 +70,8 @@ const AssignmentScreen = ({ className }) => {
 				✨ Feel free to add or update assignment information. Your contributions are valuable!
 				<br />
 				For assistance or inquiries, you can send a message to this number 📱.<br/>
-				<a href="https://api.whatsapp.com/send?text=Hi! I have a question about adding or updating assignment information." target="_blank" className="text-blue-500">Click here to chat on WhatsApp 🚀</a>.
-			  </div>
+				<a href="https://api.whatsapp.com/send?phone=+2349034954069&text=I%20want%20to%20add/update%20the%20assignment" target="_blank" className="text-blue-500">Click here to chat on WhatsApp 🚀</a>
+				</div>
 			  
 			  
 			) : (
