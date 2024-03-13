@@ -9,7 +9,7 @@ import { BsChevronLeft as Arrow  } from 'react-icons/bs'
 import { logout } from '../features/authSlice.js';
 import { CgLogOut } from 'react-icons/cg';
 import { removeItem } from '../utils/utils.js';
-import { signOut } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 
 
 const ProfileScreen = ({ className }) => {
