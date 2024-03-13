@@ -17,7 +17,7 @@ import { TbCalendarTime as Time } from 'react-icons/tb'
 import { MdBook as Book,MdOutlineLocationOn as Location, MdSchool as School, MdAssignment as Assign } from 'react-icons/md'
 import { BsFillCameraFill as Camera,BsPlus,BsTools as Tool, BsChat as Chat, BsCheckLg as Check, BsTrashFill as Trash, BsEmojiSmile as Emoji, BsChevronRight as Arrow  } from 'react-icons/bs'
 import { ImAttachment as Attachement } from 'react-icons/im'
-import { baseUrl ,formatCode, formatTimetableEntry, getCurrentDay } from '../utils/utils.js'
+import { baseUrl ,formatCode, formatTime, formatTimetableEntry, getCurrentDay } from '../utils/utils.js'
 import { FaUserFriends as Friends, FaFacebookMessenger as Message } from 'react-icons/fa'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,7 +44,7 @@ const HomeScreen = () => {
 	const currentDateTime = new Date();
 	
 	const currentTime = currentDateTime.getHours() * 100 + currentDateTime.getMinutes(); // Convert current time to a numeric format (e.g., 1430 for 2:30 PM)
-						
+
 	// console.log(currentDay,department)
 
 	useEffect(() => {
@@ -52,7 +52,7 @@ const HomeScreen = () => {
 		const fetchData = async () => {
 		  try {
 			const response = await axios.get(`${baseUrl}/api/timetable/all/${department}/${year}`);
-			// console.log(response.data.allTimetables);
+			console.log(response.data.allTimetables);
 			dispatch(addTimetable((response.data.allTimetables)))
 		  } catch (error) {
 			console.error('Error fetching data:', error);
@@ -60,6 +60,32 @@ const HomeScreen = () => {
 		};
 		fetchData(); 
 	  }, []); 
+
+		function convertTime(inputRange) {
+			const formatTime = (time) => {
+				const parts = time.split(/(?=[apm])/i).map(part => part.trim());
+		
+				if (parts.length === 2) {
+					const [hour, period] = parts;
+					const formattedHour = period.toLowerCase() === 'pm' ? parseInt(hour, 10) + 12 : hour.padStart(2, '0');
+					return `${formattedHour}:00${period.toLowerCase()}`;
+				}
+		
+				// If parts are not in the expected format, return the original time
+				return time;
+			};
+		
+			const timeParts = inputRange.split('-').map(time => formatTime(time.trim()));
+		
+			if (timeParts.length === 2) {
+				return `${timeParts[0]} - ${timeParts[1]}`;
+			}
+		
+			// If time range is not in the expected format, return the original input
+			return inputRange;
+		}
+		
+
 	
 
 	  const timetableData = (timetable) => {
@@ -145,27 +171,36 @@ const HomeScreen = () => {
 					{timetable && timetableData(timetable)?.length > 0 ? (
 						
 						timetableData(timetable).map((item, index) => {
-						  const timetableStartTime = parseInt(item.time.split('-')[0].replace(':', '')); // Convert timetable start time to a numeric format
-						
-						  // Check if the current time is around the timetable start time
-						  const isCurrentTimeAround = Math.abs(currentTime - timetableStartTime) < 100; // Adjust the threshold as needed
-						
-						  return (
-							<div key={index} className={`flex border-l-2 border-l-gray-400 flex-col gap-0 bg-gray-50 px-2 py-1 rounded border-2 border-gray-50 ${isCurrentTimeAround ? 'current-time' : ''}`}>
-							  <p className="font-bold pl-[.1rem] flex justify-between" style={{ whiteSpace: 'nowrap' }}>
-								{formatCode(item.course)} <span>{isCurrentTimeAround ? "🔥" : "⌛"}</span>
-							  </p>
-							  <div className="flex items-center">
-								<Timer className="text-md text-[#FFDAB9]" />
-								<p className="font-normal ml-2" style={{ whiteSpace: 'nowrap' }}>{formatTimetableEntry(item.time)}</p>
+							const timetableStartTime = parseInt(item.time.split('-')[0].replace(':', '')); // Convert timetable start time to a numeric format
+							console.log('Timetable Start Time:', timetableStartTime);
+						  
+							// Check if the current time is around the timetable start time
+							const isCurrentTimeAround = Math.abs(currentTime - timetableStartTime) < 100; // Adjust the threshold as needed
+							console.log('Is Current Time Around Timetable Start Time:', isCurrentTimeAround);
+						  
+							// Check if the current time is after the timetable start time
+							const isTimePassed = currentTime > timetableStartTime;
+							console.log('Has Current Time Passed Timetable Start Time:', isTimePassed);
+						  
+							console.log('Current Time : ', currentTime);
+						  
+							return (
+							  <div key={index} className={`flex border-l-2 border-l-gray-400 flex-col gap-0 bg-gray-50 px-2 py-1 rounded border-2 border-gray-50 ${isTimePassed ? 'time-passed' : ''}`}>
+								<p className="font-bold pl-[.1rem] flex justify-between" style={{ whiteSpace: 'nowrap' }}>
+								  {formatCode(item.course)} <span>{isTimePassed ? "✅" : isCurrentTimeAround ? "🔥" : "⌛"}</span>
+								</p>
+								<div className="flex items-center">
+								  <Timer className="text-md text-[#FFDAB9]" />
+								  <p className="font-normal ml-2" style={{ whiteSpace: 'nowrap' }}>{formatTime(item.time)}</p>
+								</div>
+								<div className="flex items-center">
+								  <Location className="text-lg text-[#8FBC8F]" />
+								  <p className="ml-2" style={{ whiteSpace: 'nowrap' }}>{item.venue}</p>
+								</div>
 							  </div>
-							  <div className="flex items-center">
-								<Location className="text-lg text-[#8FBC8F]" />
-								<p className="ml-2" style={{ whiteSpace: 'nowrap' }}>{item.venue}</p>
-							  </div>
-							</div>
-						  );
-						})
+							);
+						  })
+						  
 						
 					) : (
 						<div className="flex justify-center items-center w-full h-20 text-gray-500">

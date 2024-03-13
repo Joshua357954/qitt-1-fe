@@ -111,7 +111,7 @@ const TimetableScreen = ({ className }) => {
 				
 				<div className="w-full text-center mt-4 text-gray-600">
 					📅 No timetable entries found. Feel free to <br/>
-					<a href="https://api.whatsapp.com/send?phone=+2349034954069&text=Hi,%20please,%20I%20want%20to%20add/update%20my%20timetable." target="_blank" className="text-blue-500">Click here to Send your timetable on WhatsApp 🚀</a>
+					<a href="https://api.whatsapp.com/send?phone=+2349034954069&text=Hi,%20please,%20I%20want%20to%20add/update%20my%20timetable." target="_blank" className="text-blue-500">Click here to update your timetable on WhatsApp 🚀</a>
 
 				</div>
 				  

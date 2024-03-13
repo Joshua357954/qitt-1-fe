@@ -4,11 +4,25 @@ export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://ill-lime
 
 export const formatCode = code => code.replace(/([a-zA-Z]+)([0-9.]+)/, '$1 $2').toUpperCase();
 
-export const formatTime = (timetableEntry) => {
-    const [start, end] = timetableEntry.split('-').map(part => part.trim());
-    return `${start}${start.includes('am') ? '' : 'am'} - ${end}${end.includes('am') || end.includes('pm') ? '' : 'pm'}`;
-    // return '222'
-};
+
+export function formatTime(inputString) {
+  const matches = /(\d+)-(\d+)([a-zA-Z]+)/.exec(inputString);
+  
+  if (matches) {
+    const startTime = matches[1];
+    const endTime = matches[2];
+    const letters = matches[3];
+
+    const formattedStartTime = parseInt(startTime, 10) + ":00";
+    const formattedEndTime = parseInt(endTime, 10) + ":00";
+
+    return `${formattedStartTime} - ${formattedEndTime}${letters}`;
+  } else {
+    return null;
+  }
+}
+
+
 
 export const formatTimetableEntry = (timeRange) => {
     const [start, end] = timeRange.split('-');
