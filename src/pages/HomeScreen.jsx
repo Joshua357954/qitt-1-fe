@@ -40,7 +40,11 @@ const HomeScreen = () => {
 	const year = userData.year;
 	
 	const currentDay = getCurrentDay()
-
+	
+	const currentDateTime = new Date();
+	
+	const currentTime = currentDateTime.getHours() * 100 + currentDateTime.getMinutes(); // Convert current time to a numeric format (e.g., 1430 for 2:30 PM)
+						
 	// console.log(currentDay,department)
 
 	useEffect(() => {
@@ -139,19 +143,30 @@ const HomeScreen = () => {
 					<div className="bg-white w-full flex gap-2 pb-1 overflow-x-auto">
 					
 					{timetable && timetableData(timetable)?.length > 0 ? (
-						timetableData(timetable).map((item, index) => (
-						<div key={index} className="flex border-l-2 border-l-gray-400 flex-col gap-0 bg-gray-50 px-2 py-1 rounded border-2 border-gray-50">
-							<p className="font-bold pl-[.1rem] flex justify-between" style={{ whiteSpace: 'nowrap' }}>{formatCode(item.course)} <span>{item.current ? "🔥" : "⌛"}</span></p>
-							<div className="flex items-center">
-							<Timer className="text-md text-[#FFDAB9]" />
-							<p className="font-normal ml-2" style={{ whiteSpace: 'nowrap' }}>{formatTimetableEntry(item.time)}</p>
+						
+						timetableData(timetable).map((item, index) => {
+						  const timetableStartTime = parseInt(item.time.split('-')[0].replace(':', '')); // Convert timetable start time to a numeric format
+						
+						  // Check if the current time is around the timetable start time
+						  const isCurrentTimeAround = Math.abs(currentTime - timetableStartTime) < 100; // Adjust the threshold as needed
+						
+						  return (
+							<div key={index} className={`flex border-l-2 border-l-gray-400 flex-col gap-0 bg-gray-50 px-2 py-1 rounded border-2 border-gray-50 ${isCurrentTimeAround ? 'current-time' : ''}`}>
+							  <p className="font-bold pl-[.1rem] flex justify-between" style={{ whiteSpace: 'nowrap' }}>
+								{formatCode(item.course)} <span>{isCurrentTimeAround ? "🔥" : "⌛"}</span>
+							  </p>
+							  <div className="flex items-center">
+								<Timer className="text-md text-[#FFDAB9]" />
+								<p className="font-normal ml-2" style={{ whiteSpace: 'nowrap' }}>{formatTimetableEntry(item.time)}</p>
+							  </div>
+							  <div className="flex items-center">
+								<Location className="text-lg text-[#8FBC8F]" />
+								<p className="ml-2" style={{ whiteSpace: 'nowrap' }}>{item.venue}</p>
+							  </div>
 							</div>
-							<div className="flex items-center">
-							<Location className="text-lg text-[#8FBC8F]" />
-							<p className="ml-2" style={{ whiteSpace: 'nowrap' }}>{item.venue}</p>
-							</div>
-						</div>
-						))
+						  );
+						})
+						
 					) : (
 						<div className="flex justify-center items-center w-full h-20 text-gray-500">
 						 <p className='px-2 text-center'>
