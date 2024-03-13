@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import PageNav from '../components/PageNav.jsx'
 import MainLayout from '../components/MainLayout.jsx'
 import { BsChevronLeft as Arrow } from 'react-icons/bs'
-import { baseUrl, formatCode, formatTime } from '../utils/utils.js'
+import { baseUrl, formatCode, formatTime, getCurrentDay } from '../utils/utils.js'
 import { FaChevronRight as AR,FaChevronLeft as AL } from 'react-icons/fa'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,14 +11,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const TimetableScreen = ({ className }) => {
 
-	const [day,setDay] = useState('monday')
+	const currentDay = getCurrentDay()
+	const [day,setDay] = useState(currentDay)
 	const [isExam,setIsExam] = useState(false)
 	const {timetable} = useSelector((state) => state.users)
 	const [daysClases,setDaysClasses] = useState([])
 
 
-	const dept = 'computer_science';
-	const year = '100';
+	// const dept = 'computer_science';
+	// const year = '100';
 
 	// useEffect(() => {
 

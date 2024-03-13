@@ -92,7 +92,7 @@ const QuizScreen = ({ className }) => {
   async function submitQuiz() {
     // submit users answer to submit quiz route
     const submit = await axios.post(
-      `${baseUrl}/api/pastQuestion/submitQuizAnswers`,{totalQuestions: numberOfQuestions, answers} );
+      `${baseUrl}/api/pastQuestion/submitQuizAnswers`,{subject:course, totalQuestions: numberOfQuestions, answers} );
     console.log(submit.data);
 	setResult(submit.data)
     setSubmitted(true);
@@ -180,7 +180,7 @@ const QuizScreen = ({ className }) => {
             </Link>
 
             <div className="flex flex-col justify-center w-full px-2 bg-blue-1000 h-full">
-              <p className="text-2xl sm:text-3xl font-extrabold text-gray-900">
+              <p className="text-2xl sm:text-3xl font-extrabold text-gray-900 capitalize">
                 {course}
               </p>
               <div className="text-sm text-gray-600 font-semibold">

@@ -10,7 +10,7 @@ import { FaChevronLeft as Arrow,FaChevronDown as ArrowD } from 'react-icons/fa'
 
 
 const NavBar = ({ route }) => {
-	const userData = useSelector((state) => state.user);
+	const userData = useSelector((state) => state.auth.user);
 	
 	function getCurrentUniYear(startAcademicYear) {
 		var yr = new Date().getFullYear() - parseInt(startAcademicYear.split('/')[0], 10) + 1;
@@ -37,7 +37,7 @@ const NavBar = ({ route }) => {
 	    			{/* Image */}
 	    			<Link to="/profile">
 	        			<div className="w-14 h-14 border-[2px] border-gray-300 rounded-full bg-gray-400">
-			        		<img src={userData.imageUrl || Imgg} className="w-full h-full rounded-full bg-cover object-cover size"/>
+			        		<img src={userData?.imgURL || Imgg} className="w-full h-full rounded-full bg-cover object-cover size"/>
 			        	</div> 
 	        		</Link>
 
@@ -45,9 +45,10 @@ const NavBar = ({ route }) => {
 	    			<div className="flex flex-col ">
 	    				<div className="text-lg"> Hey,<span className="font-bold capitalize" > {getName(userData.name) || 'User'}</span></div>
 	    				<div className="flex font-light items-center gap-1 text-md  text-gray-700">
-	    					<div>{userData.courseName || userData.department || 'Qitt'}</div>
+	    					<div>{userData?.department?.label?.split(' ')[0] || 'Qitt'}</div>
 	    					<div className="w-2 h-2 rounded-full bg-gray-800">&nbsp;</div>
-	    					<div>{getCurrentUniYear(userData.session)|| 0}00lvl</div>
+	    					<div>{userData.year}00lvl</div>
+							{/* <div>{getCurrentUniYear(userData.session)|| 0}00lvl</div> */}
 	    				</div>
 	    			</div>
 

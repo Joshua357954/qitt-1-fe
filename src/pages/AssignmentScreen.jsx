@@ -19,6 +19,7 @@ const AssignmentScreen = ({ className }) => {
 	const data1 = [{color:'red'},{color:'orange'},{color:'yellow'},{color:'green'},{color:'blue'},{color:'indigo'},{color:'violet'}]
 	const dispatch = useDispatch()
 	const { assignments } = useSelector((state)=> state.users)
+	const userData = useSelector((state) => state.auth.user)
 
 	const num = {
 		'0': <Zero className="text-blue-500 text-xl" />,
@@ -33,8 +34,8 @@ const AssignmentScreen = ({ className }) => {
 		'9': <Nine className="text-blue-500 text-xl" />,
 	  };
 	//   const [assignments, setAssignments] = useState([]);
-	  const department = 'computer_science';
-	  const year = '100';
+	  const department = userData.department.value;
+	  const year = userData.year;
 	
 	  useEffect(() => {
 		const fetchAssignments = async () => {

@@ -12,7 +12,7 @@ const PastQuestion = ({ className }) => {
 	const dataParam = queryParams.get('q');
 	const [selection,setSelection] = useState(dataParam ? 'practice' : 'courses')
 
-	const [course,setCourse] = useState('GES 103')
+	const [course,setCourse] = useState('ges101')
 	const [time,setTime] = useState(10)
 	const [numberOfQuestions,setNumberOfQuestions] = useState(10)
 
@@ -69,9 +69,9 @@ const PastQuestion = ({ className }) => {
 					<div className="flex gap-x-4">
 						<span className='font-semibold'>Course : </span>
 	        			<select onChange={({target}) => setCourse(target.value) } className="bg-transparent flex focus:outline-none"name="api-verbs">
-							<option value='GES 103'>GES 103</option>
-							{/* <option value='STA 126'>STA 126</option>
-							<option value='MATHS 114'>MATHS 114</option>
+							<option value='ges101'>GES 101</option>
+							<option value='ges103'>GES 103</option>
+							{/* <option value='MATHS 114'>MATHS 114</option>
 							<option value='MATHS 124'>MATHS 124</option>
 							<option value='PHY 178'>PHY 178</option>	 */}
 						</select>

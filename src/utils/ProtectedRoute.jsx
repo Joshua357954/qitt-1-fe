@@ -4,15 +4,13 @@ import { useSelector } from 'react-redux';
 
 export default function ProtectedAuth({ children }) {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.auth.user);
 
-  useEffect(() => {
-    // Check if user is not authenticated, then redirect to the /auth route
-    if (!user.name) {
+  useEffect(() => { 
+    if (!user?.enrolled) {
       navigate('/auth');
     }
-  }, [user.name, navigate]); // useEffect dependencies
-
-  // Render the protected content if the user is authenticated
-  return user.name ? <>{children}</> : null;
+  }, [user?.enrolled, navigate]); 
+ 
+  return user?.enrolled ? <>{children}</> : null;
 }

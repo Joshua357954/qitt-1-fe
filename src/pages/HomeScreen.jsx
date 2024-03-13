@@ -5,11 +5,11 @@ import MainLayout from '../components/MainLayout.jsx'
 
 // FaGraduationCap (fa6)
 import PastQA from '../assets/images/question-and-answer-svgrepo-com.svg'
-import Resources from '../assets/images/database-server-svgrepo-com.svg'
-import Department from '../assets/images/graduation-cap-svgrepo-com.svg'
+import Resources from '../assets/images/chart-bar-chart-svgrepo-com.svg'
+import Department from '../assets/images/building-education-school-winter-snow-svgrepo-com.svg'
 import Feed1 from '../assets/images/community-comments-svgrepo-com.svg'
-import Feed2 from '../assets/images/survey-rating-feedback-svgrepo-com.svg'
-import PastQuestion from '../assets/images/question-and-answer-svgrepo-com.svg'
+import Feed2 from '../assets/images/customer-rate-svgrepo-com.svg'
+import PastQuestion from '../assets/images/evaluation-exam-svgrepo-com.svg'
 import { FiSend as SendIcon } from 'react-icons/fi'
 import { HiHome as Home } from 'react-icons/hi'
 import { RiTimerFlashLine as Timer} from 'react-icons/ri'
@@ -17,7 +17,7 @@ import { TbCalendarTime as Time } from 'react-icons/tb'
 import { MdBook as Book,MdOutlineLocationOn as Location, MdSchool as School, MdAssignment as Assign } from 'react-icons/md'
 import { BsFillCameraFill as Camera,BsPlus,BsTools as Tool, BsChat as Chat, BsCheckLg as Check, BsTrashFill as Trash, BsEmojiSmile as Emoji, BsChevronRight as Arrow  } from 'react-icons/bs'
 import { ImAttachment as Attachement } from 'react-icons/im'
-import { baseUrl ,formatCode, formatTimetableEntry } from '../utils/utils.js'
+import { baseUrl ,formatCode, formatTimetableEntry, getCurrentDay } from '../utils/utils.js'
 import { FaUserFriends as Friends, FaFacebookMessenger as Message } from 'react-icons/fa'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,7 +26,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const HomeScreen = () => {
 	const dispatch = useDispatch()
-	const userData = useSelector((state) => state.user);
+	const userData = useSelector((state) => state.auth.user);
 	const { timetable } = useSelector((state) => state.users)
 	
 	const Classes = [{time:"9:00am - 11:00am",color:'bg-green-400',course:"GES 101",venue:"MBA 1",current:true},
@@ -36,26 +36,28 @@ const HomeScreen = () => {
 		 ]
 
 
-	const dept = 'computer_science';
-	const year = '100';
-	const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-	const currentDayIndex = new Date().getDay();
-	const currentDay = daysOfWeek[currentDayIndex].toLowerCase();
+	const department = userData.department.value;
+	const year = userData.year;
+	
+	const currentDay = getCurrentDay()
+
+	// console.log(currentDay,department)
 
 	useEffect(() => {
 
 		const fetchData = async () => {
 		  try {
-			const response = await axios.get(`${baseUrl}/api/timetable/all/${dept}/${year}`);
+			const response = await axios.get(`${baseUrl}/api/timetable/all/${department}/${year}`);
 			// console.log(response.data.allTimetables);
 			dispatch(addTimetable((response.data.allTimetables)))
 		  } catch (error) {
 			console.error('Error fetching data:', error);
 		  }
 		};
-		fetchData(); // Call the fetchData function when the component mounts
+		fetchData(); 
 	  }, []); 
 	
+
 	  const timetableData = (timetable) => {
 		const foundDay = timetable.filter(item => Object.keys(item)[0].toLowerCase() == currentDay)
 		// timetable.find(dayObj => Object.keys(dayObj)[0] == currentDay);
@@ -67,14 +69,7 @@ const HomeScreen = () => {
 
 	const sections = [
 	  {
-	    title: "Resources",
-	    description: "Get all the resources you need to get better",
-	    image: Resources,
-	    link:'/resources',
-	    gradientClass: "from-[#ff9800] to-orange-200",
-	  },
-	  {
-	    title: userData.courseName || 'Dept',
+	    title: userData.department.value.split('_')[0] || 'Dept',
 	    description: "Top Educational Notch experience",
 	    image: Department,
 	    link:'/department',
@@ -83,9 +78,17 @@ const HomeScreen = () => {
 	  {
 	    title: "Past Q/A",
 	    description: "Empower with seamless assessments",
-	    image: PastQA,
+	    image: PastQuestion,
 	    link:'/pastQuestion?q=practice',
 	    gradientClass: "from-[#f06292] to-pink-200",
+	  },
+	  {
+	    title: "Cgpa \
+		Calculator",
+	    description: "Quickly calculate your CGPA for academic success!",
+	    image: Resources,
+	    link:'/cgpacalculator',
+	    gradientClass: "from-[#ff9800] to-orange-200",
 	  },
 	  {
 	    title: "Feedback",
@@ -112,7 +115,7 @@ const HomeScreen = () => {
 					{sections.map((section, index) => (
 				        <Link to={section.link} key={index} style={shadowStyle} className={`w-full bg-gray-50 border-gray-100 flex flex-col p-3 pt-4 {section.gradientClass} h-full sm:h-full  rounded-md`}>
 				          <div className="w-full">
-				            <h2 className="font-bold text-gray-900 text-xl sm:text-2xl">{section.title}</h2>
+				            <h2 className="font-bold text-gray-900 text-xl sm:text-2xl capitalize">{section.title}</h2>
 				            <p className="mt-1 text-sm font-normal text-gray-700">{section.description}</p>
 				        </div>
 				          {/* Second Partition*/}
@@ -123,31 +126,41 @@ const HomeScreen = () => {
 				      ))}
 				</div>
 
-			<h2 class="font-semibold text-xl mt-4 mb-2">
+			<h2 className="font-semibold text-xl mt-4 mb-2">
 					Today's Classes
 					{timetableData(timetable).length > 0 && (
-						<span class="bg-blue-500 text-sm text-white rounded-full ml-3 px-2 py-1">
+						<span className="bg-blue-500 text-sm text-white rounded-full ml-3 px-2 py-1">
 						{timetableData(timetable).length}
 						</span>
 					)}
 					
 					</h2>
 
-				<div className="bg-white w-full flex gap-2 pb-1 overflow-x-auto">
-				  {timetable && timetableData(timetable)?.map((item, index) => (
-				    <div key={index} className="flex border-l-2 border-l-gray-400 flex-col gap-0 bg-gray-50 px-2 py-1 rounded border-2 border-gray-50">
-				      <p className="font-bold pl-[.1rem] flex justify-between" style={{ whiteSpace: 'nowrap' }}>{formatCode(item.course)} <span>{item.current ? "🔥" : "⌛"}</span></p>
-				      <div className="flex items-center">
-				        <Timer className="text-md text-[#FFDAB9]" />
-				        <p className="font-normal ml-2" style={{ whiteSpace: 'nowrap' }}>{formatTimetableEntry(item.time)}</p>
-				      </div>
-				      <div className="flex items-center">
-				        <Location className="text-lg text-[#8FBC8F] ]" />
-				        <p className="ml-2" style={{ whiteSpace: 'nowrap' }}>{item.venue}</p>
-				      </div>
-				    </div>
-				  ))}
-				</div>
+					<div className="bg-white w-full flex gap-2 pb-1 overflow-x-auto">
+					
+					{timetable && timetableData(timetable)?.length > 0 ? (
+						timetableData(timetable).map((item, index) => (
+						<div key={index} className="flex border-l-2 border-l-gray-400 flex-col gap-0 bg-gray-50 px-2 py-1 rounded border-2 border-gray-50">
+							<p className="font-bold pl-[.1rem] flex justify-between" style={{ whiteSpace: 'nowrap' }}>{formatCode(item.course)} <span>{item.current ? "🔥" : "⌛"}</span></p>
+							<div className="flex items-center">
+							<Timer className="text-md text-[#FFDAB9]" />
+							<p className="font-normal ml-2" style={{ whiteSpace: 'nowrap' }}>{formatTimetableEntry(item.time)}</p>
+							</div>
+							<div className="flex items-center">
+							<Location className="text-lg text-[#8FBC8F]" />
+							<p className="ml-2" style={{ whiteSpace: 'nowrap' }}>{item.venue}</p>
+							</div>
+						</div>
+						))
+					) : (
+						<div className="flex justify-center items-center w-full h-20 text-gray-500">
+						 <p className='px-2 text-center'>
+							📅 Oops! It seems like there's no timetable available. <a href="/assignment">Add one now!</a>✨
+						</p>
+						</div>
+					)}
+					</div>
+
 				
 			</section>
 		<Toaster/>

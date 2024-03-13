@@ -8,9 +8,12 @@ import { FiSend as SendIcon } from 'react-icons/fi'
 import { MdOutlineLocalLibrary as Library2 , MdBook as Book, MdSchool as School, MdOutlineAssignment as Assign } from 'react-icons/md'
 import { removeItem } from '../utils/utils';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom'
+import { getAuth, signOut } from 'firebase/auth';
 
 const SideBar = ({ route }) => {
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
 	const data = [
 		{name:'Home', icon: <Home2 className="text-xl"/>,link:'/auth'},
 		{name:'Timetable', icon: <Events className="text-xl"/>,link:'/timetable'},
@@ -20,8 +23,15 @@ const SideBar = ({ route }) => {
 	]
 
 	const handleLogout = () => {
-		removeItem('Qitt-Auth')
+		// signout from firebase
+		const auth = getAuth()
+		signOut(auth)
+		// clear local storage
+		removeItem('qitt-user')
+		// clear state
 		dispatch(logout())
+		// Reload the current page
+		window.location.reload();
 	}
 
     return (

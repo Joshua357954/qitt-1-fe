@@ -20,6 +20,7 @@ import VerifyUser from './pages/verifyUser.jsx'
 import PastQuestionScreen from './pages/PastQuestion.jsx'
 import QuizScreen from './pages/QuizScreen.jsx'
 import ScoreBoardScreen from './pages/ScoreBoard.jsx'
+import CgpaCalculator from "./pages/CgpaCalculator.jsx"
 
 import AdminScreen from './pages/screens/User/Users.jsx'
 
@@ -31,6 +32,7 @@ import UpdateTimetableScreen from './pages/screens/Timetable/UpdateTimetable.jsx
 
 
 import AdminFeedbackScreen from './pages/screens/FeedbackScreen.jsx'
+import Enroll from "./pages/Enroll.jsx"
 
 
 const router = createBrowserRouter([
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
     {
       path: "/feedback",
       element: <ProtectedRoute><FeedbackScreen /></ProtectedRoute>,
+    },
+    {
+      path: "/enroll/:name/:uid",
+      element: <Enroll/>,
+    },
+    {
+      path: "/cgpacalculator",
+      element: <CgpaCalculator/>,
     },
     {
       path: "/profile",

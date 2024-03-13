@@ -62,13 +62,149 @@ export function removeItem(itemKey) {
     localStorage.removeItem(itemKey);
 }
 
-// {
-//     subject: 'STA 132',
-//     numAssignments: 3,
-//     upcomingDates: [
-//       { date: 'July 5th' },
-//       { date: 'Sept 13th' },
-//       { date: 'July 1st' },
-//     ],
-//     assignments: []
-//   },
+
+
+export function updateItem(itemKey, updatedValue) {
+    // Get the existing item
+    const existingItem = getItem(itemKey);
+  
+    // If the item exists, update its value
+    if (existingItem) {
+      const updatedItem = { ...existingItem, ...updatedValue };
+      var jsonString = JSON.stringify(updatedItem);
+      localStorage.setItem(itemKey, jsonString);
+      return updatedItem;
+    } else {
+      // If the item doesn't exist, add it
+      var jsonString = JSON.stringify(updatedValue);
+      localStorage.setItem(itemKey, jsonString);
+      return updatedValue;
+    }
+  }
+  
+export function getCurrentDay() {
+    const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+    const currentDayIndex = new Date().getDay();
+    return daysOfWeek[currentDayIndex].toLowerCase();
+}
+
+export const faculties = [
+    { value: 'agriculture', label: 'Faculty of Agriculture' },
+    { value: 'computing', label: 'Faculty of Computing' },
+    { value: 'dentistry', label: 'Faculty of Dentistry' },
+    { value: 'education', label: 'Faculty of Education' },
+    { value: 'engineering', label: 'Faculty of Engineering' },
+    { value: 'health_sciences', label: 'College of Health Sciences' },
+    { value: 'humanities', label: 'Faculty of Humanities' },
+    { value: 'law', label: 'Faculty of Law' },
+    { value: 'management_sciences', label: 'Faculty of Management Sciences' },
+    { value: 'pharmaceutical_sciences', label: 'Faculty of Pharmaceutical Sciences' },
+    { value: 'science', label: 'Faculty of Science' },
+    { value: 'science_lab_technology', label: 'School of Science Laboratory Technology' },
+    { value: 'social_sciences', label: 'Faculty of Social Sciences' },
+  ];
+  
+export const departments = [
+    { value: 'accounting', label: 'Accounting' },
+    { value: 'adult_non_formal_education', label: 'Adult & Non-Formal Education' },
+    { value: 'adult_education', label: 'Adult Education' },
+    { value: 'agric_economics_extension', label: 'Agric-Economics & Extension' },
+    { value: 'agriculture', label: 'Agriculture' },
+    { value: 'anatomy', label: 'Anatomy' },
+    { value: 'animal_environmental_biology', label: 'Animal & Environmental Biology' },
+    { value: 'animal_science', label: 'Animal Science' },
+    { value: 'banking_finance', label: 'Banking & Finance' },
+    { value: 'biochemistry', label: 'Biochemistry' },
+    { value: 'botany', label: 'Botany' },
+    { value: 'business_education', label: 'Business Education' },
+    { value: 'business_management', label: 'Business Management' },
+    { value: 'chemical_engineering', label: 'Chemical Engineering' },
+    { value: 'chemistry', label: 'Chemistry' },
+    { value: 'civil_engineering', label: 'Civil Engineering' },
+    { value: 'civil_law', label: 'Civil Law' },
+    { value: 'computer_science', label: 'Computer Science' },
+    { value: 'computer_science_mathematics', label: 'Computer Science & Mathematics' },
+    { value: 'computer_with_statistics', label: 'Computer with Statistics' },
+    { value: 'creative_arts', label: 'Creative Arts' },
+    { value: 'cybersecurity', label: 'Cybersecurity' },
+    { value: 'dentistry_dental_surgery', label: 'Dentistry & Dental Surgery' },
+    { value: 'drama_dramatic_performing_arts', label: 'Drama/Dramatic/Performing Arts' },
+    { value: 'early_childhood_education', label: 'Early Childhood Education' },
+    { value: 'economics', label: 'Economics' },
+    { value: 'education_accounting', label: 'Education & Accounting' },
+    { value: 'education_biology', label: 'Education & Biology' },
+    { value: 'education_chemistry', label: 'Education & Chemistry' },
+    { value: 'education_computer_science', label: 'Education & Computer Science' },
+    { value: 'education_economics', label: 'Education & Economics' },
+    { value: 'education_english_language', label: 'Education & English Language' },
+    { value: 'education_french', label: 'Education & French' },
+    { value: 'education_geography', label: 'Education & Geography' },
+    { value: 'education_history', label: 'Education & History' },
+    { value: 'education_mathematics', label: 'Education & Mathematics' },
+    { value: 'education_physics', label: 'Education & Physics' },
+    { value: 'education_political_science', label: 'Education & Political Science' },
+    { value: 'education_religious_studies', label: 'Education & Religious Studies' },
+    { value: 'education_social_science', label: 'Education & Social Science' },
+    { value: 'education_social_studies', label: 'Education and Social Studies' },
+    { value: 'education_arts', label: 'Education Arts' },
+    { value: 'education_fine_art', label: 'Education Fine Art' },
+    { value: 'education_foundations_management', label: 'Education Foundations and Management' },
+    { value: 'educational_psychology_guidance_counselling', label: 'Educational/Psychology Guidance & Counselling' },
+    { value: 'electrical_electronics_engineering', label: 'Electrical/Electronics Engineering' },
+    { value: 'electrical_engineering', label: 'Electrical Engineering' },
+    { value: 'electronics_engineering', label: 'Electronics Engineering' },
+    { value: 'english_language', label: 'English Language' },
+    { value: 'environmental_education', label: 'Environmental Education' },
+    { value: 'environmental_engineering', label: 'Environmental Engineering' },
+    { value: 'environmental_technology', label: 'Environmental Technology' },
+    { value: 'fine_arts_design', label: 'Fine Arts & Design' },
+    { value: 'fisheries', label: 'Fisheries' },
+    { value: 'food_science_technology', label: 'Food Science & Technology' },
+    { value: 'forestry_wildlife', label: 'Forestry & Wildlife' },
+    { value: 'french', label: 'French' },
+    { value: 'geography_environmental_management', label: 'Geography & Environmental Management' },
+    { value: 'geology', label: 'Geology' },
+    { value: 'history', label: 'History' },
+    { value: 'home_science', label: 'Home Science' },
+    { value: 'hospitality_tourism_management', label: 'Hospitality & Tourism Management' },
+    { value: 'human_kinetics_health_education', label: 'Human Kinetics & Health Education' },
+    { value: 'industrial_chemistry', label: 'Industrial Chemistry' },
+    { value: 'information_technology', label: 'Information Technology' },
+    { value: 'library_information_science', label: 'Library & Information Science' },
+    { value: 'linguistics_communication_studies', label: 'Linguistics & Communication Studies' },
+    { value: 'linguistics_nigeria_language', label: 'Linguistics & Nigeria Language' },
+    { value: 'marketing', label: 'Marketing' },
+    { value: 'mathematics', label: 'Mathematics' },
+    { value: 'mathematics_statistics', label: 'Mathematics & Statistics' },
+    { value: 'mathematics_computer_science', label: 'Mathematics with Computer Science' },
+    { value: 'mechanical_engineering', label: 'Mechanical Engineering' },
+    { value: 'mechatronics_engineering', label: 'Mechatronics Engineering' },
+    { value: 'medicine_surgery', label: 'Medicine & Surgery' },
+    { value: 'microbiology', label: 'Microbiology' },
+    { value: 'music', label: 'Music' },
+    { value: 'natural_gas_engineering', label: 'Natural Gas Engineering' },
+    { value: 'nursing_nursing_science', label: 'Nursing/Nursing Science' },
+    { value: 'petroleum_gas_engineering', label: 'Petroleum & Gas Engineering' },
+    { value: 'pharmacy', label: 'Pharmacy' },
+    { value: 'philosophy', label: 'Philosophy' },
+    { value: 'physical_education', label: 'Physical Education' },
+    { value: 'physics', label: 'Physics' },
+    { value: 'physics_electronics', label: 'Physics with Electronics' },
+    { value: 'physiology', label: 'Physiology' },
+    { value: 'plant_science_biotechnology', label: 'Plant Science & Biotechnology' },
+    { value: 'political_administrative_studies', label: 'Political & Administrative Studies' },
+    { value: 'primary_education', label: 'Primary Education' },
+    { value: 'public_administration', label: 'Public Administration' },
+    { value: 'pure_applied_mathematics', label: 'Pure & Applied Mathematics' },
+    { value: 'pure_industrial_chemistry', label: 'Pure & Industrial Chemistry' },
+    { value: 'religious_cultural_studies', label: 'Religious & Cultural Studies' },
+    { value: 'science_education', label: 'Science Education' },
+    { value: 'science_laboratory_technology', label: 'Science Laboratory Technology' },
+    { value: 'social_work', label: 'Social Work' },
+    { value: 'sociology', label: 'Sociology' },
+    { value: 'teacher_education_science', label: 'Teacher Education Science' },
+    { value: 'theatre_film_studies', label: 'Theatre & Film Studies' },
+    { value: 'zoology', label: 'Zoology' },
+   
+  ];
+  

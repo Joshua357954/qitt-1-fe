@@ -28,6 +28,7 @@ const Department = ({ className }) => {
 	const [section,setSection] = useState('class')
 	const { courseName } = useSelector((state) => state.user);
 	const { coursemates } = useSelector((state) => state.users);
+	const userData = useSelector((state) => state.auth.user)
 
 
 	const clas = [
@@ -36,17 +37,20 @@ const Department = ({ className }) => {
 		{name:'David',pix:'',exco:''},
 	]
 
-	const courses = [
-		{name: 'MTH270.1 ', discription: ' Numerical analysis'},
-		{name: 'MTH210.1', discription: 'Linear Algebra'},
-		{name: 'STA260.1 ', discription: ' introduction to probability and statistics'},
-		{name: 'CSC280.1 ', discription: ' introduction to Computer programming (Fotran)'},
-		{name: 'CSC281.1 ', discription: ' computer system fundamentals'},
-		{name: 'CSC283.1 ', discription: ' introduction to information systems and File structures'}, 
-		{name: 'CSC284.1 ', discription: ' introduction to Logic Design'}, 
-		{name: 'CSC288.1 ', discription: ' Structured programming'}
-	] 
+	const dept = userData.department.value
 
+	const courses = (dept === 'computer_science') ?
+	[
+		{ name: 'MTH270.1', description: 'Numerical analysis' },
+		{ name: 'MTH210.1', description: 'Linear Algebra' },
+		{ name: 'STA260.1', description: 'Introduction to probability and statistics' },
+		{ name: 'CSC280.1', description: 'Introduction to Computer programming (Fortran)' },
+		{ name: 'CSC281.1', description: 'Computer system fundamentals' },
+		{ name: 'CSC283.1', description: 'Introduction to information systems and File structures' },
+		{ name: 'CSC284.1', description: 'Introduction to Logic Design' },
+		{ name: 'CSC288.1', description: 'Structured programming' }
+	]
+	: [];
 
 	const excoss = []
 
@@ -54,22 +58,22 @@ const Department = ({ className }) => {
 	useEffect(() => {
 		const getUsersByDepartment = async (department) => {
 		  try {
-			const response = await Axios.get(`${baseUrl}/api/user/getUsers/${department.toUpperCase()}`);
+			const response = await Axios.get(`${baseUrl}/api/user/getUsers/${department}`);
 			const users = response.data;
-			// console.log(users)
+			console.log(users)
 			dispatch(addCoursemates(users))
 			
 		  } catch (error) {
 			console.error('Error fetching users:', error.message);
 		  }
 		};
-		getUsersByDepartment('computer science');
+		getUsersByDepartment(userData.department.value);
 
 	}, [section=='class',coursemates == []]);
 
 	
     return (
-		<MainLayout route={`Department (${courseName})`}>
+		<MainLayout route={`Department (${userData.department.value.split('_')[0]})`}>
 			<section className="flex flex-col items-center  w-full">
         		
         		<div className="w-full h-14 max-h-14 flex justify-center items-center mt-2">
@@ -151,7 +155,7 @@ const Department = ({ className }) => {
 									</div> */}
 									<div className="flex flex-col">
 									<div className="font-black text-lg">{item.name}</div>
-									<div className="font-light">{item.discription}</div>
+									<div className="font-light">{item.description}</div>
 									{/* {item.lecturers[0] && <div className="flex gap-x-2 items-center font-bold"><div className="w-3 h-3 rounded-full bg-blue-500"></div>{item.lecturers[0]}</div>} */}
 									</div>
 								</div>
@@ -159,13 +163,12 @@ const Department = ({ className }) => {
 							) : (
 							
 							<div className="text-center text-gray-600 flex flex-col gap-y-2 mt-2 items-center justify-center">
-								<p>🙈 Oops! No courses or course outlines available at the moment.</p>
-								<p>👋 Connect with us on WhatsApp to add, update, or inquire about course outlines! We're here to assist you. 💬
-									<br/><a href="https://api.whatsapp.com/send?text=Hi! I'm reaching out for assistance with courses or course outlines. Can you help me?" target="_blank" className="text-blue-500">Start a conversation on WhatsApp</a>
+								<p> Oops! No courses or outlines available right now.</p>
+								<p>👋 Reach out on WhatsApp to add or update courses! We're here to assist you.
+								  <br/><a href="https://api.whatsapp.com/send?text=Hi! I need help with courses or outlines. Can you assist me?" target="_blank" className="text-blue-500">Chat on WhatsApp</a>
 								</p>
 							</div>
-
-							  
+							 
 							)}
 						</div>
 
