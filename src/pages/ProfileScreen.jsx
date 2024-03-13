@@ -9,6 +9,7 @@ import { BsChevronLeft as Arrow  } from 'react-icons/bs'
 import { logout } from '../features/authSlice.js';
 import { CgLogOut } from 'react-icons/cg';
 import { removeItem } from '../utils/utils.js';
+import { signOut } from 'firebase/auth';
 
 
 const ProfileScreen = ({ className }) => {
@@ -41,10 +42,16 @@ const ProfileScreen = ({ className }) => {
 	const dispatch = useDispatch()
 
 	const handleLogout = () => {
-		removeItem('Qitt-Auth')
+		// signout from firebase
+		const auth = getAuth()
+		signOut(auth)
+		// clear local storage
+		removeItem('qitt-user')
+		// clear state
 		dispatch(logout())
+		// Reload the current page
+		window.location.reload();
 	}
-
 
     return (
         <MainLayout route="Profile">
@@ -111,7 +118,7 @@ const ProfileScreen = ({ className }) => {
 	        		</fieldset>
     			</div>
 	
-				<div className="mt-12 sm:hidden flex justify-center gap-3 xl:mb-3 mb-2 text-red-500 hover:text-red-600 mr-6" onClick={handleLogout}>
+				<div className="mt-12  flex justify-center items-center gap-3 xl:mb-3 mb-2 text-red-500 hover:text-red-600 mr-6" onClick={handleLogout}>
 					<CgLogOut className="text-xl font-medium"/>
 					Logout
 				</div>
