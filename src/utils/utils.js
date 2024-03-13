@@ -1,5 +1,5 @@
 
-export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://red-nutty-earthworm.cyclic.app' : 'http://localhost:4000';
+export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://ill-lime-rabbit-vest.cyclic.app' : 'http://localhost:4000';
 
 
 export const formatCode = code => code.replace(/([a-zA-Z]+)([0-9.]+)/, '$1 $2').toUpperCase();
