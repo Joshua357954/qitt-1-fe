@@ -18,7 +18,7 @@ const SideBar = ({ route }) => {
 		{name:'Home', icon: <Home2 className="text-xl"/>,link:'/auth'},
 		{name:'Timetable', icon: <Events className="text-xl"/>,link:'/timetable'},
 		{name:'Assignment', icon: <Assign className="text-xl"/>,link:'/assignment'},
-		{name:'Library', icon: <Library2 className="text-xl"/>,link:'/library'},
+		{name:'Resources', icon: <Library2 className="text-xl"/>,link:'/library'},
 		// {name:'Events', icon: <Events className="text-xl"/>,link:'/'}
 	]
 

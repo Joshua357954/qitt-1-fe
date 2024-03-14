@@ -91,7 +91,7 @@ const AuthScreen = () => {
     var auth = getAuth();
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
-    
+
     console.log(auth)
     try {
       if (!auth?.currentUser?.uid){
@@ -132,7 +132,7 @@ const AuthScreen = () => {
           // if not enrolled send to enroll page
           else{
             console.log("User nott enrolled .")
-            navigate(`/enroll/${user.name.split(' ')[0]}/${user.id}`)
+            // navigate(`/enroll/${user.name.split(' ')[0]}/${user.id}`)
           }
 
       }
@@ -191,64 +191,65 @@ const AuthScreen = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // Validation check before submitting
-  if (!validateForm()) {
-    setError('Invalid email or password. Please check your input.');
-    return;
-  }
+    return toast("Sorry, this feature is not completed yet, but you can use the Google Sign-In method", { icon: '😞' });
 
-  const auth = getAuth();
-
-  try {
-    setIsLoading(true)
-
-    const userCredential = isLogin
-      ? await signInWithEmailAndPassword(auth, email, password)
-      : await createUserWithEmailAndPassword(auth, email, password);
-
-    const { user } = userCredential;
-    const msg = isLogin ? 'Login Successful 🎉' : 'Registration Successful 🎉';
-
-    if (!isLogin) {
-      // Register Condition
-      const registrationResult = await dispatch(registerUser({ email, displayName: user.displayName, imgURL: user.photoURL, uid: user.uid }));
-      toast(registrationResult.payload.message);
-      return setIsLoading(false)
-    }else {
-      // Login Condition
-      // getUser
+    // Validation check before submitting
+    if (!validateForm()) {
+      setError('Invalid email or password. Please check your input.');
+      return;
     }
 
-    // Common actions after signing in or registering
-    setIsLoading(false);
-    toast(msg);
-    console.log("User signed in:", user);
-    // Additional actions after signing in or registering
-    // ...
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    const auth = getAuth();
 
-    console.error(`Error (Code: ${errorCode}): ${errorMessage}`);
+    try {
+      setIsLoading(true)
 
-    // Display user-friendly error messages using a toast
-    if (isLogin) {
-      // Handle login errors
-      toast(errorCode === 'auth/user-not-found' ? 'User not found. Please register or check the email address.' :
-        errorCode === 'auth/wrong-password' ? 'Incorrect password. Please double-check your password.' :
-        'Unexpected error. Try again later.', { icon: 'ℹ️' });
-    } else {
-      // Handle registration errors
-      toast(errorCode === 'auth/email-already-in-use' ? 'Email already in use. Try another or reset password.' :
-        errorCode === 'auth/weak-password' ? 'Weak password. Choose a stronger one.' :
-        'Unexpected error. Try again later.', { icon: 'ℹ️' });
+      const userCredential = isLogin
+        ? await signInWithEmailAndPassword(auth, email, password)
+        : await createUserWithEmailAndPassword(auth, email, password);
+
+      const { user } = userCredential;
+      const msg = isLogin ? 'Login Successful 🎉' : 'Registration Successful 🎉';
+
+      if (!isLogin) {
+        // Register Condition
+        const registrationResult = await dispatch(registerUser({ email, displayName: user.displayName, imgURL: user.photoURL, uid: user.uid }));
+        toast(registrationResult.payload.message);
+        return setIsLoading(false)
+      }else {
+        // Login Condition
+        // getUser
+      }
+
+      // Common actions after signing in or registering
+      setIsLoading(false);
+      toast(msg);
+      console.log("User signed in:", user);
+      // Additional actions after signing in or registering
+      // ...
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      console.error(`Error (Code: ${errorCode}): ${errorMessage}`);
+
+      // Display user-friendly error messages using a toast
+      if (isLogin) {
+        // Handle login errors
+        toast(errorCode === 'auth/user-not-found' ? 'User not found. Please register or check the email address.' :
+          errorCode === 'auth/wrong-password' ? 'Incorrect password. Please double-check your password.' :
+          'Unexpected error. Try again later.', { icon: 'ℹ️' });
+      } else {
+        // Handle registration errors
+        toast(errorCode === 'auth/email-already-in-use' ? 'Email already in use. Try another or reset password.' :
+          errorCode === 'auth/weak-password' ? 'Weak password. Choose a stronger one.' :
+          'Unexpected error. Try again later.', { icon: 'ℹ️' });
+      }
+      setIsLoading(false)
     }
-    setIsLoading(false)
-  }
-  
-};
+  };
 
 
   // Function to toggle between login and register modes
@@ -427,9 +428,9 @@ const AuthScreen = () => {
         </div>
 
         {/* Additional information */}
-        <p className="text-center mt-3 text-gray-600 underline-offset-2 underline hover:opacity-80">
+        {/* <p className="text-center mt-3 text-gray-600 underline-offset-2 underline hover:opacity-80">
           Fully available for <b>CSC Year 2</b>. Stay tuned for the rollout to everyone! ⌛
-        </p>
+        </p> */}
       </main>
       <Toaster />
     </div>

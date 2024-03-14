@@ -45,7 +45,7 @@ const Library = ({ className }) => {
 	const [resourceName,setResource] = useState('all')
 
     return (
-        <MainLayout route="Library">
+        <MainLayout route="Resources">
         	<section className="flex flex-col w-full px-1 sm:px-5 h-full gap-5">
 	        	
 	        	<div className="w-full  h-14 overflow-x-auto flex justify-start sm:justify-center gap-2">
