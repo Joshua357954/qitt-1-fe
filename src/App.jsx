@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import ReactGA from 'react-ga';
+import { useEffect } from 'react'; // Import useEffect hook
 import ProtectedAuth from "./utils/ProtectedAuth.jsx";
 import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 import HomeScreen from "./pages/HomeScreen.jsx";
@@ -131,4 +132,13 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default router;
+const AppRouter = () => {
+  useEffect(() => {
+    // Track page view on initial load
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
+
+  return router;
+};
+
+export default AppRouter;
