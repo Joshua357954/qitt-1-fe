@@ -109,6 +109,9 @@ export function isDateInPast(dateString) {
   return providedDate < new Date();
 }
 
+export const googleTrackingId = 'G-NW5HFZ63JV'
+
+
 export const faculties = [
     { value: 'agriculture', label: 'Faculty of Agriculture' },
     { value: 'computing', label: 'Faculty of Computing' },
