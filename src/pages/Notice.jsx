@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react'
-import MainLayout from '../components/MainLayout.jsx'
-import { PiImageSquareFill as Img } from 'react-icons/pi'
+import React, { useEffect } from 'react';
+import MainLayout from '../components/MainLayout.jsx';
+import { PiImageSquareFill as Img } from 'react-icons/pi';
 import { AiFillNotification, AiFillInfoCircle } from 'react-icons/ai';
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import ReactGA from 'react-ga';
+import { googleTrackingId } from '../utils/utils.js';
 
 
 const NoticeCard = ({ type, title, date, description }) => {
@@ -25,9 +26,10 @@ const NoticeCard = ({ type, title, date, description }) => {
   );
 };
 
-
 const Notice = ({ className }) => {
-	const noticeData = [
+  const userData = useSelector((state) => state.auth.user);
+
+  const noticeData = userData.department === 'computer_science' ? ([
     {
       type: 'announcement',
       title: 'Important Announcement',
@@ -40,26 +42,27 @@ const Notice = ({ className }) => {
       date: '28th Feb',
       description: '📢📢📢 The NLC protest has been called off, so school resumes today. However, the Lecturer for CSC281 won\'t be coming, and he has granted today as the last day for the assignment to be done. Submission will be done tomorrow. Maths210 class for today is still pending. Stay tuned for any update on it.',
     }
-  ];
+  ]) : [];
  
-
-    return (
-        <MainLayout route="Notice">
-        	<section className="w-full h-full flex flex-col gap-2 justify-center">
-        		{noticeData.map((item, index) => (
-			        <NoticeCard
-			          key={index}
-			          type={item.type}
-			          title={item.title}
-			          date={item.date}
-			          description={item.description}
-			        />
-			      ))}
-        	</section>
-        </MainLayout>
-    );
+  return (
+    <MainLayout route="Notice">
+      <section className="w-full h-full flex flex-col gap-2 justify-center">
+        {noticeData.length > 0 ? (
+          noticeData.map((item, index) => (
+            <NoticeCard
+              key={index}
+              type={item.type}
+              title={item.title}
+              date={item.date}
+              description={item.description}
+            />
+          ))
+        ) : (
+          <p className='text-center mt-2 '>No Notification yet 🥺</p>
+        )}
+      </section>
+    </MainLayout>
+  );
 };
 
-export default Notice
-
-   
+export default Notice;

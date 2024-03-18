@@ -132,13 +132,17 @@ const router = createBrowserRouter([
   },
 ]);
 
-const AppRouter = () => {
-  useEffect(() => {
-    // Track page view on initial load
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []);
+// const AppRouter = () => {
 
-  return router;
-};
+//   useEffect(() => {
+//     // Initialize Google Analytics
+//     ReactGA.initialize(googleTrackingId);
+    
+//     // Track page view on component mount
+//     ReactGA.pageview(window.location.pathname + window.location.search);
+//   }, []);
 
-export default AppRouter;
+//   return router;
+// };
+
+export default router;
