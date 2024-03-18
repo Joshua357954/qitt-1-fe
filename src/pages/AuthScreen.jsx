@@ -132,7 +132,7 @@ const AuthScreen = () => {
           // if not enrolled send to enroll page
           else{
             console.log("User nott enrolled .")
-            // navigate(`/enroll/${user.name.split(' ')[0]}/${user.id}`)
+            navigate(`/enroll/${user.name.split(' ')[0]}/${user.id}`)
           }
 
       }

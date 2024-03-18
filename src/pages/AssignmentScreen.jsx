@@ -8,7 +8,7 @@ import { FaChevronLeft as ArrowL } from 'react-icons/fa'
 import MainLayout from '../components/MainLayout.jsx'
 import Assignment from '../assets/images/assignment-svgrepo-com.svg'
 import { BsImage, BsChevronLeft as Arrow  } from 'react-icons/bs'
-import { baseUrl, convertToTime, fDate, fbTime, getDay } from '../utils/utils.js';
+import { baseUrl, convertToTime, fDate, fbTime, getDay, isDateInPast } from '../utils/utils.js';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAssignments } from '../features/userSlice.js';
@@ -92,11 +92,13 @@ const AssignmentScreen = ({ className }) => {
 						<Link
 							key={dateIdx}
 							to={`/assignment/${item.subject}/${realDate(dateItem.dateGiven)}/${realDate(dateItem.deadline)}/${dateItem.content}`}
-							className="text-black hover:text-gray-700 text-sm sm:text-md px-2 py-1 bg-blue-100 gap-x-1 hover:bg-blue-200 text-medium flex items-center rounded"
-						>
-							{/* You may want to replace the below line with your actual Doc component */}
+							className={`text-black hover:text-gray-700 text-sm sm:text-md px-2 py-1 gap-x-1 ${
+								isDateInPast(realDate(dateItem.deadline).split(' ').slice(-2).join(' ').split('th')[0]) ? 'bg-red-400 hover:bg-red-500' : 'bg-blue-100 hover:bg-blue-200'
+							  } text-medium flex items-center rounded`}>
+							
 							<Doc />
 							{realDate(dateItem.dateGiven).split(' ').slice(-2).join(' ')}
+							{console.log(isDateInPast(realDate(dateItem.deadline).split(' ').slice(-2).join(' ').split('th')[0]))}
 						</Link>
 						))}
 					</div>

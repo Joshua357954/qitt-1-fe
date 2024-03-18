@@ -102,6 +102,13 @@ export function getCurrentDay() {
     return daysOfWeek[currentDayIndex].toLowerCase();
 }
 
+export function isDateInPast(dateString) {
+  const [month, day] = dateString.split(' ');
+  const currentYear = (new Date()).getFullYear();
+  const providedDate = new Date(`${month} ${day}, ${currentYear}`);
+  return providedDate < new Date();
+}
+
 export const faculties = [
     { value: 'agriculture', label: 'Faculty of Agriculture' },
     { value: 'computing', label: 'Faculty of Computing' },
