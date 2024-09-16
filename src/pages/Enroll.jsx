@@ -87,6 +87,11 @@ const Enroll = () => {
       return false;
     }
 
+    if (formData.year.length > 1 && ![1, 2, 3, 4, 5].includes(formData.year)) {
+        toast("I");
+        return false;
+    }
+  
     return true;
   };
 
@@ -160,7 +165,7 @@ const Enroll = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
             id="year"
             type="number"
-            placeholder="Enter Year"
+            placeholder="Enter Level eg: 1,2,3,4 Or 5"
             name="year"
             min={1}
             max={6}
